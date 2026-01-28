@@ -11,7 +11,7 @@ import SwiftUI
 struct IOS_Network_CallApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            UsersView()
         }
     }
 }

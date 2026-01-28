@@ -8,8 +8,31 @@
 import SwiftUI
 
 struct UsersView: View {
+    @State private var viewModel = UsersViewModel()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+
+        NavigationStack{
+            Group{
+                if viewModel.isLoading {
+                    ProgressView("Loading...")
+                } else if let error = viewModel.errorMessage {
+                    Text(error).foregroundColor(.red)
+                } else {
+                    List(viewModel.users) {
+                        user in
+                        VStack(alignment: .leading) {
+                            Text(user.name).bold()
+                            Text(user.email).font(Font.subheadline).foregroundColor(.gray)
+                            
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Users")
+            .task {
+                await viewModel.loadUsers()
+            }
+        }
     }
 }
 
